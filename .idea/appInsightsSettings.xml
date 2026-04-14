@@ -8,8 +8,8 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.example.ipub_app" />
-                  <option name="mobileSdkAppId" value="1:202780512405:android:7a5ca5f7200b6770554b9c" />
+                  <option name="appId" value="com.ipub.ipub_app" />
+                  <option name="mobileSdkAppId" value="1:202780512405:android:efd4ce57289b14d8554b9c" />
                   <option name="projectId" value="ipubapp" />
                   <option name="projectNumber" value="202780512405" />
                 </ConnectionSetting>

@@ -11,6 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Ipub_app">
+
+        <!-- Login (Launcher) -->
         <activity
             android:name=".LoginActivity"
             android:exported="true"
@@ -18,25 +20,30 @@
             android:theme="@style/Theme.Ipub_app">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity" />
-        <activity android:name=".AddMemberActivity" />
+        <!-- Main Activity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
+
+        <!-- Adicionar novo membro -->
+        <activity
+            android:name=".AddMemberActivity"
+            android:exported="false" />
+
+        <!-- Editar membro -->
+        <activity
+            android:name=".EditMemberActivity"
+            android:exported="false" />
+
         <activity android:name=".MembersGroupActivity" />
         <activity android:name=".AllMembersActivity"/>
         <activity android:name=".screen.AdminActivity"/>
 
-<!--        <activity-->
-<!--            android:name=".screen.AdminActivity"-->
-<!--            android:exported="true"-->
-<!--            android:label="Painel Administrativo"-->
-<!--            android:theme="@style/Theme.Ipub_app" />-->
-
-
-
+        <activity android:name=".SearchActivity" />
 
     </application>
 
