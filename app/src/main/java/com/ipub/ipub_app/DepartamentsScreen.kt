@@ -1,8 +1,8 @@
 package com.ipub.ipub_app
 
 import android.content.Intent
-import androidx.activity.ComponentActivity
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.clickable
@@ -34,10 +34,10 @@ class DepartmentMembersActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DepartmentMembersScreen(
     viewModel: MemberViewModel,
+    innerPadding: PaddingValues = PaddingValues(),
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
@@ -50,46 +50,40 @@ fun DepartmentMembersScreen(
         "Filhos do Reino"
     )
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Departamentos") }
-            )
-        }
-    ) { innerPadding ->
+    Column(
+        modifier = Modifier
+            .padding(innerPadding)
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Text(
+            text = "Selecione um departamento:",
+            style = MaterialTheme.typography.titleMedium
+        )
 
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(16.dp)
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Lista de departamentos
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text(
-                text = "Selecione um departamento:",
-                style = MaterialTheme.typography.titleMedium
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // 🔹 Lista de departamentos
-            LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                items(departments) { department ->
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                // 👉 Abre a tela MembersGroupActivity passando o nome do departamento
-                                val intent = Intent(context, MembersGroupActivity::class.java)
-                                intent.putExtra("group_name", department)
-                                context.startActivity(intent)
-                            },
-                        elevation = CardDefaults.cardElevation(4.dp)
-                    ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            Text(
-                                text = department,
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                        }
+            items(departments) { department ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            val intent = Intent(context, MembersGroupActivity::class.java)
+                            intent.putExtra("group_name", department)
+                            context.startActivity(intent)
+                        },
+                    elevation = CardDefaults.cardElevation(4.dp)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = department,
+                            style = MaterialTheme.typography.titleMedium
+                        )
                     }
                 }
             }

@@ -7,14 +7,13 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.ipub.ipub_app.ui.theme.Ipub_appTheme
+import com.ipub.ipub_app.ui.theme.AppScaffold // Importa o AppScaffold padronizado
 import com.ipub.ipub_app.viewmodel.MemberViewModel
 import com.ipub.ipub_app.data.Member
 
@@ -41,31 +40,24 @@ class MembersGroupActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DepartmentMembersGroup(
     departmentName: String,
     members: List<Member>,
     onBack: () -> Unit
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(departmentName) },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Voltar")
-                    }
-                }
-            )
-        }
+    // Utilizando o AppScaffold para padronizar a Toolbar com botão de voltar
+    AppScaffold(
+        title = departmentName,
+        showBackButton = true,
+        onBackClick = onBack
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            // Adiciona o texto com a contagem de membros aqui
+            // Adiciona o texto com a contagem de membros
             Text(
                 text = "Total de membros: ${members.size}",
                 style = MaterialTheme.typography.titleMedium,
@@ -76,7 +68,7 @@ fun DepartmentMembersGroup(
             if (members.isEmpty()) {
                 Box(
                     modifier = Modifier
-                        .weight(1f) // Faz a caixa preencher o espaço restante
+                        .weight(1f)
                         .fillMaxWidth(),
                     contentAlignment = androidx.compose.ui.Alignment.Center
                 ) {
@@ -85,7 +77,7 @@ fun DepartmentMembersGroup(
             } else {
                 LazyColumn(
                     modifier = Modifier
-                        .weight(1f) // Faz a lista preencher o espaço restante
+                        .weight(1f)
                         .padding(horizontal = 16.dp)
                         .fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(12.dp)

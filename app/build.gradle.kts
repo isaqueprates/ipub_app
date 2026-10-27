@@ -13,8 +13,8 @@ android {
         applicationId = "com.ipub.ipub_app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -69,6 +69,9 @@ dependencies {
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+
+    // WorkManager para Notificações Agendadas
+    implementation("androidx.work:work-runtime-ktx:2.9.1")
 
     implementation("androidx.compose.material:material-icons-extended:1.7.4")
 

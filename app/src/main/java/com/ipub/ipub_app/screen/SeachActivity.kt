@@ -10,19 +10,19 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.ipub.ipub_app.data.Member
-import com.ipub.ipub_app.data.MemberItem // Reutilize o seu MemberItem existente
+import com.ipub.ipub_app.data.MemberItem
 import com.ipub.ipub_app.ui.theme.Ipub_appTheme
 import com.ipub.ipub_app.viewmodel.MemberViewModel
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.platform.LocalContext
 
 class SearchActivity : ComponentActivity() {
 
@@ -34,7 +34,6 @@ class SearchActivity : ComponentActivity() {
             Ipub_appTheme {
 
                 val context = LocalContext.current
-                // Estado local para a consulta de busca e resultados
                 var searchQuery by remember { mutableStateOf("") }
 
                 val allMembers by viewModel.members.collectAsState()
@@ -42,27 +41,22 @@ class SearchActivity : ComponentActivity() {
                 SearchScreen(
                     searchQuery = searchQuery,
                     onQueryChange = { searchQuery = it },
-                    members = allMembers.filter { // Filtro simples local
+                    members = allMembers.filter {
                         it.name.contains(searchQuery, ignoreCase = true) ||
                                 it.department.contains(searchQuery, ignoreCase = true) ||
                                 it.role.contains(searchQuery, ignoreCase = true)
                     },
                     onBack = { finish() },
                     onEdit = { member ->
-                        // 🔹 AÇÃO DE EDITAR: Abre a EditMemberActivity passando o ID
                         val intent = Intent(context, EditMemberActivity::class.java)
                         intent.putExtra("memberId", member.id)
                         context.startActivity(intent)
                     },
                     onDelete = { member ->
-                        // 🔹 AÇÃO DE DELETAR: Chama o ViewModel para excluir o membro
                         viewModel.delete(member.id)
                         Toast.makeText(context, "${member.name} excluído.", Toast.LENGTH_SHORT).show()
                     },
-                    // Implemente ações de clique se quiser que a busca leve a edição/detalhes
-                    onMemberClick = { member ->
-                        // Lógica para abrir detalhes ou edição do membro clicado
-                    }
+                    onMemberClick = {}
                 )
             }
         }
@@ -84,9 +78,15 @@ fun SearchScreen(
         topBar = {
             TopAppBar(
                 title = { Text("Buscar Membros") },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+                ),
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Voltar")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Voltar")
                     }
                 }
             )
@@ -127,7 +127,6 @@ fun SearchScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(members, key = { it.id }) { member ->
-
                         MemberItem(
                             member = member,
                             onEditClick = { onEdit(member) },

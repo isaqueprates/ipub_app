@@ -1,3 +1,5 @@
+package com.ipub.ipub_app
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -25,9 +27,11 @@ fun MembersScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
+        modifier = Modifier.padding(innerPadding),
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
-        },floatingActionButton = {
+        },
+        floatingActionButton = {
             FloatingActionButton(
                 onClick = onAddClick,
                 containerColor = MaterialTheme.colorScheme.primary
@@ -42,16 +46,15 @@ fun MembersScreen(
     ) { padding ->
         Column(
             modifier = Modifier
-                .padding(innerPadding)
                 .padding(padding)
                 .fillMaxSize()
         ) {
-            // 🔹 Contador de membros e Botão de Busca na mesma linha
+            // Contador de membros e Botão de Busca na mesma linha
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween, // Espaça os elementos
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if (members.isNotEmpty()) {
@@ -61,7 +64,6 @@ fun MembersScreen(
                     )
                 }
 
-                // 🔹 BOTÃO DE BUSCA AQUI
                 IconButton(onClick = onSearchClick) {
                     Icon(
                         imageVector = Icons.Default.Search,
@@ -70,7 +72,6 @@ fun MembersScreen(
                     )
                 }
             }
-
 
             if (members.isEmpty()) {
                 Box(
@@ -96,12 +97,9 @@ fun MembersScreen(
                 }
             }
 
-
-
             // Snackbar de confirmação
             LaunchedEffect(memberToDelete) {
                 memberToDelete?.let { member ->
-
                     val result = snackbarHostState.showSnackbar(
                         message = "Excluir ${member.name}?",
                         actionLabel = "Sim",

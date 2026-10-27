@@ -8,9 +8,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.*
@@ -57,7 +59,6 @@ fun AddMemberScreen(
     onCancel: () -> Unit
 ) {
     val context = LocalContext.current
-    val activity = context as Activity
 
     // Estados
     var name by remember { mutableStateOf("") }
@@ -90,7 +91,7 @@ fun AddMemberScreen(
         calendar.get(Calendar.DAY_OF_MONTH)
     )
 
-    // 🔹 NOVO DatePicker Batismo nas Águas
+    // DatePicker Batismo nas Águas
     val datePickerBatism = DatePickerDialog(
         context,
         { _, y, m, d ->
@@ -101,7 +102,7 @@ fun AddMemberScreen(
         calendar.get(Calendar.DAY_OF_MONTH)
     )
 
-    // 🔹 NOVO DatePicker Batismo no Espírito
+    // DatePicker Batismo no Espírito
     val datePickerEspirit = DatePickerDialog(
         context,
         { _, y, m, d ->
@@ -112,14 +113,19 @@ fun AddMemberScreen(
         calendar.get(Calendar.DAY_OF_MONTH)
     )
 
-
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Novo membro") },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+                ),
                 navigationIcon = {
                     IconButton(onClick = onCancel) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Voltar")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Voltar")
                     }
                 }
             )
@@ -130,6 +136,7 @@ fun AddMemberScreen(
                 .padding(padding)
                 .padding(16.dp)
                 .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
         ) {
 
             // Nome
@@ -205,14 +212,14 @@ fun AddMemberScreen(
 
             Spacer(Modifier.height(20.dp))
 
-            // 🔹 Data de Batismo nas Águas
+            // Data de Batismo nas Águas
             OutlinedTextField(
                 value = dateBatism,
                 onValueChange = {},
                 readOnly = true,
                 label = { Text("Batismo nas Águas (DD/MM/AAAA)") },
                 trailingIcon = {
-                    IconButton(onClick = { datePickerBatism.show() }) { // 🔹 Mostra o DatePicker
+                    IconButton(onClick = { datePickerBatism.show() }) {
                         Icon(Icons.Default.DateRange, contentDescription = null)
                     }
                 },
@@ -222,14 +229,14 @@ fun AddMemberScreen(
 
             Spacer(Modifier.height(10.dp))
 
-            // 🔹 Data de Batismo no Espírito Santo
+            // Data de Batismo no Espírito Santo
             OutlinedTextField(
                 value = dateEspirit,
                 onValueChange = {},
                 readOnly = true,
                 label = { Text("Batismo no Espírito (DD/MM/AAAA)") },
                 trailingIcon = {
-                    IconButton(onClick = { datePickerEspirit.show() }) { // 🔹 Mostra o DatePicker
+                    IconButton(onClick = { datePickerEspirit.show() }) {
                         Icon(Icons.Default.DateRange, contentDescription = null)
                     }
                 },
@@ -239,13 +246,11 @@ fun AddMemberScreen(
 
             Spacer(Modifier.height(20.dp))
 
-
-
             // Botão salvar
             Button(
                 onClick = {
                     if (name.isNotBlank() && role.isNotBlank()) {
-                        onSave(name, role, department, birthday,dateBatism,dateEspirit)
+                        onSave(name, role, department, birthday, dateBatism, dateEspirit)
                     } else {
                         Toast.makeText(context, "Preencha o nome e cargo", Toast.LENGTH_SHORT).show()
                     }
